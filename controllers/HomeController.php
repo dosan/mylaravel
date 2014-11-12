@@ -18,8 +18,8 @@ class HomeController extends BaseController {
 	public function index()
 	{
 		$posts = Post::get();
-		//die(print_r($posts));
-		return View::make('index')->with('posts', $posts);
+		$user = User::where('username','=','donald')->first();
+		return View::make('index', array('posts' => $posts, 'user' => $user));
 	}
 
 }

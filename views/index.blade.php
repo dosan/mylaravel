@@ -1,7 +1,8 @@
 @extends('layouts.default')
-@section('content')
+@section('body')
 
 @if($posts->count())
+	@if($user->hasRole("Admin"))
 	@foreach($posts as $post)
 		<article>
 			<h2>{{$post->title}}</h2>
@@ -9,5 +10,6 @@
 			<a href="{{URL::action('get-post', $post->slug)}}">Read more</a>
 		</article>
 	@endforeach
+	@endif
 @endif
 @stop

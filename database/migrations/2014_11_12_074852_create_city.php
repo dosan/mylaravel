@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RememberToken extends Migration {
+class CreateCity extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,12 @@ class RememberToken extends Migration {
 	 */
 	public function up()
 	{
-	Schema::table('users', function(Blueprint $table)
-		{
-		$table->rememberToken();
-	});
+		Schema::create('cities', function($t){
+			$t->increments('id');
+			$t->string('name');
+			$t->integer('country_id');
+			$t->timestamps();
+		});
 	}
 
 	/**

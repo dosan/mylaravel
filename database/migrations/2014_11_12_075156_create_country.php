@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsTable extends Migration {
+class CreateCountry extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,16 +12,11 @@ class CreatePostsTable extends Migration {
 	 */
 	public function up()
 	{
-/*		Schema::create('posts', function($t){
+		Schema::create('countries', function($t){
 			$t->increments('id');
-			$t->integer('user_id');
-			$t->string('title', 100);
-			$t->string('slug', 100);
-			$t->text('body');
-			$t->text('image');
-			$t->boolean('enabled');
+			$t->string('name');
 			$t->timestamps();
-		});*/
+		});
 	}
 
 	/**
@@ -31,7 +26,7 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('posts');
+		//
 	}
 
 }

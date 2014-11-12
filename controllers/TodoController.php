@@ -1,5 +1,5 @@
 <?php
-class TodoController extends BaseController{
+/*class TodoController extends BaseController{
 
 	public function index(){
 		$items = Auth::user()->items;
@@ -42,4 +42,4 @@ class TodoController extends BaseController{
 		}
 		return Redirect::route('todo');
 	}
-}
+}*/

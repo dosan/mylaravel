@@ -21,13 +21,35 @@ Route::get('/posts/{slug}', array(
 		'uses' => 'PostController@getPost'
 ));
 
-Route::resource('user', 'UsersController'); 
+Route::resource('user', 'UsersController');
 Route::get('login', array('as' => 'login', 'uses' => 'UsersController@login'));
 Route::get('/profile', array('as' => 'profile', 'uses' => 'UsersController@profile'));
 Route::get('/register', array('as' => 'create', 'uses' => 'UsersController@create'));
 Route::post('/login', array('as' => 'handle-login', 'uses' => 'UsersController@handleLogin'));
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
 
+Route::get('users', array('as' => 'user-list', 'uses' => 'AdminController@users'));
+Route::get('users/{id}/edit', array('as' => 'user-edit', 'uses' => 'UsersController@edit'));
+Route::get('/adduser', array('as' => 'add-user', 'uses' => 'UsersController@addUser'));
+
+/*
+Route::filter('Admin', function()
+{
+	if (! Entrust::hasRole('Admin') ) // Checks the current user
+	{
+		return Redirect::to('/');
+	}
+});
+*/
+Route::get('/admin', array('as' => 'admin-place', 'uses' => 'AdminController@index'));
+// Only users with roles that have the 'manage_posts' permission will
+// be able to access any admin/post route.
+/*Route::when('admin/post*', 'manage_posts');
+Route::when('users*', 'Admin');
+Route::when('admin*', 'Admin');
+
+*/
+/*
 Route::get('/todo', [
 		'as' => 'todo',
 		'uses' => 'TodoController@index'
@@ -61,4 +83,4 @@ Route::bind('item', function($value, $route){
 Route::get('/todo/delete/{item}', array(
 	'as' => 'delete-task',
 	'uses' => 'TodoController@getDelete'
-));
+));*/

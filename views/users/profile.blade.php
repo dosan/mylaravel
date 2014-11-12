@@ -1,5 +1,4 @@
 @extends('layouts.default')
-
 	@foreach ($errors->all() as $error)
 		<div class='errors'>{{$error}}</div>
 	@endforeach

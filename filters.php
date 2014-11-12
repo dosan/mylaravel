@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters
@@ -10,18 +9,14 @@
 | application. Here you may also register your custom route filters.
 |
 */
-
 App::before(function($request)
 {
 	//
 });
-
-
 App::after(function($request, $response)
 {
 	//
 });
-
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -32,7 +27,6 @@ App::after(function($request, $response)
 | integrates HTTP Basic authentication for quick, simple checking.
 |
 */
-
 Route::filter('auth', function()
 {
 	if (Auth::guest())
@@ -43,17 +37,14 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('/todo/login');
+			return Redirect::guest('login');
 		}
 	}
 });
-
-
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();
 });
-
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
@@ -64,12 +55,10 @@ Route::filter('auth.basic', function()
 | response will be issued if they are, which you may freely change.
 |
 */
-
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('todo');
+	if (Auth::check()) return Redirect::to('/');
 });
-
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter
@@ -80,7 +69,6 @@ Route::filter('guest', function()
 | session does not match the one given in this request, we'll bail.
 |
 */
-
 Route::filter('csrf', function()
 {
 	if (Session::token() != Input::get('_token'))
@@ -88,3 +76,16 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+// Only users with roles that have the 'manage_posts' permission will
+// be able to access any route within admin/post.
+Entrust::routeNeedsPermission( 'admin/post*', 'manage_posts' );
+
+// Only owners will have access to routes within admin/advanced
+Entrust::routeNeedsRole( 'admin/advanced*', 'Owner' );
+
+// Optionally the second parameter can be an array of permissions or roles.
+// User would need to match all roles or permissions for that route.
+Entrust::routeNeedsPermission( 'admin/post*', array('manage_posts','manage_comments') );
+
+Entrust::routeNeedsRole( 'admin/advanced*', array('Owner','Writer') );

@@ -122,7 +122,10 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Lavary\Menu\ServiceProvider',
-		'Way\Generators\GeneratorsServiceProvider'
+		'Way\Generators\GeneratorsServiceProvider',
+		'Zizaco\Entrust\EntrustServiceProvider',
+		'Cartalyst\Sentry\SentryServiceProvider',
+		'Mrjuliuss\Syntara\SyntaraServiceProvider',
 	),
 
 	/*
@@ -190,7 +193,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Menu'            => 'Lavary\Menu\Facade',
-
+		'Entrust'         => 'Zizaco\Entrust\EntrustFacade',
+		'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
 	),
-
 );

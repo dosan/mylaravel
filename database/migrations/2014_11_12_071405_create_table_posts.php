@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePurchasesTable extends Migration {
+class CreateTablePosts extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,16 @@ class CreatePurchasesTable extends Migration {
 	 */
 	public function up()
 	{
-/*		Schema::create('purchases', function($t){
+		Schema::create('posts', function($t){
 			$t->increments('id');
-			$t->integer('order_id');
-			$t->integer('product_id');
-			$t->integer('price');
-			$t->integer('amount');
+			$t->integer('user_id');
+			$t->string('title', 100);
+			$t->string('slug', 100);
+			$t->text('body');
+			$t->text('image');
+			$t->boolean('enabled');
 			$t->timestamps();
-		});*/
+		});
 	}
 
 	/**

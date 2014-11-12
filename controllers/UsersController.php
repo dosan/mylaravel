@@ -2,6 +2,10 @@
 
 class UsersController extends \BaseController {
 
+
+	public function __construct()
+	{
+	}
 	/**
 	 * View user login
 	 */
@@ -26,19 +30,14 @@ class UsersController extends \BaseController {
 	 * @return redirect login
 	 */
 	public function handleLogin(){
-		$name = Input::get('name');
+		$name = Input::get('username');
 		$pass = Input::get('password');
 
-        $credentials = array(
-			'name' => $name,
-			'password' => $pass
-		);
-
-		if(Auth::attempt($credentials, true)) {
+		if(Auth::attempt(['username' => $name, 'password' => $pass])) {
 			return Redirect::to('/profile');
 		}
 		else {
-			return Redirect::route('login')->withInput();
+			return Redirect::route('login')->withInput()->withErrors('That username/password combo does not exist.');;
 		}       
 	}
 	/**
@@ -49,7 +48,29 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+/*		$owner = new Role;
+		$owner->name = 'Owner';
+		$owner->save();
+
+		$admin = new Role;
+		$admin->name = 'Admin';
+		$admin->save();
+		$user = User::where('name','=','donald')->first();
+		$user->roles()->attach( $admin->id );
+		$managePosts = new Permission;
+		$managePosts->name = 'manage_posts';
+		$managePosts->display_name = 'Manage Posts';
+		$managePosts->save();
+
+		$manageUsers = new Permission;
+		$manageUsers->name = 'manage_users';
+		$manageUsers->display_name = 'Manage Users';
+		$manageUsers->save();
+
+		$owner->perms()->sync(array($managePosts->id,$manageUsers->id));
+		$admin->perms()->sync(array($managePosts->id));*/
+		$users = User::all();
+		return View::make('users', array('users' => $users));
 	}
 
 	/**
@@ -78,7 +99,7 @@ class UsersController extends \BaseController {
 			'adress'                => Input::get('adress'),
 			'password'              => Input::get('password'),
 			'password_confirmation' => Input::get('password_confirmation')
-		);        
+		);
 		$rules = array(
 			'name'                         => 'required',
 			'email'                        => 'required',
@@ -87,13 +108,15 @@ class UsersController extends \BaseController {
 		);
 		$validator = Validator::make($data, $rules);
 		// process the registration
-        if ($validator->fails()) {
+		if ($validator->fails()) {
 			Session::flash('message', 'This email is already registered, please choose another one.');
-			return Redirect::to('create') ->withErrors($validator)->withInput(Input::except('password'));
-        } else {
+			return Redirect::to('register') ->withErrors($validator)->withInput(Input::except('password'));
+		} else {
 			$user = new User;
 			$user->name       = Input::get('name');
 			$user->email        = Input::get('email');
+			$user->adress        = Input::get('adress');
+			$user->phone        = Input::get('phone');
 			$user->password        = Hash::make(Input::get('password'));
 			$user->save();
 			// redirect
@@ -123,7 +146,8 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$user = User::find($id);
+		return View::make('users.edit', [ 'user' => $user ]);
 	}
 
 	/**
@@ -135,7 +159,17 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$user = User::find($id);
+
+		$user->name       = Input::get('name');
+		$user->email      = Input::get('email');
+		$user->adress     = Input::get('adress');
+		$user->phone      = Input::get('phone');
+		$user->password   = Hash::make(Input::get('password'));
+
+		$user->save();
+
+		return Redirect::to('/profile');
 	}
 
 	/**
@@ -147,7 +181,10 @@ class UsersController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		User::destroy($id);
+		return Redirect::to('/');
 	}
-
+	public function addUser(){
+		return View::make('users.create');
+	}
 }

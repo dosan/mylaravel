@@ -125,7 +125,7 @@ return array(
 		'Way\Generators\GeneratorsServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
-		'Mrjuliuss\Syntara\SyntaraServiceProvider',
+		'Conner\Addresses\AddressesServiceProvider',
 	),
 
 	/*
@@ -194,6 +194,5 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Menu'            => 'Lavary\Menu\Facade',
 		'Entrust'         => 'Zizaco\Entrust\EntrustFacade',
-		'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
 	),
 );

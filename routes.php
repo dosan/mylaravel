@@ -11,76 +11,37 @@
 |
 */
 
-Route::get('/', array(
-		'as' => 'index',
-		'uses' => 'HomeController@index'
-));
+Route::get('/', array('as' => 'home-index', 'uses' => 'PostController@index'));
+Route::get('/posts/{slug}', array('as' => 'post-index', 'uses' => 'PostController@getPost'));
 
-Route::get('/posts/{slug}', array(
-		'as' => 'get-post',
-		'uses' => 'PostController@getPost'
-));
-
-Route::resource('user', 'UsersController');
-Route::get('login', array('as' => 'login', 'uses' => 'UsersController@login'));
-Route::get('/profile', array('as' => 'profile', 'uses' => 'UsersController@profile'));
-Route::get('/register', array('as' => 'create', 'uses' => 'UsersController@create'));
+Route::resource('/user', 'UsersController');
+Route::get('/login', array('as' => 'login-form', 'uses' => 'UsersController@login'));
 Route::post('/login', array('as' => 'handle-login', 'uses' => 'UsersController@handleLogin'));
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
+Route::get('/register', array('as' => 'create', 'uses' => 'UsersController@create'));
 
-Route::get('users', array('as' => 'user-list', 'uses' => 'AdminController@users'));
-Route::get('users/{id}/edit', array('as' => 'user-edit', 'uses' => 'UsersController@edit'));
+Route::get('/profile', array('as' => 'profile-data', 'uses' => 'UsersController@profile'));
+Route::get('/profile/edit', array('as' => 'profile-edit', 'uses' => 'UsersController@edit'));
+Route::post('/profile/edit/{id}', array('as' => 'profile-edit-id', 'uses' => 'UsersController@update'));
+
+Route::get('/admin', array('as' => 'admin-place', 'uses' => 'AdminController@index'));
+Route::get('/admin/users', array('as' => 'user-list', 'uses' => 'AdminController@users'));
+Route::get('/admin/users/{id}/edit', array( 'uses' => 'AdminController@useredit'));
+Route::post('/admin/users/{id}/edit', array('as' => 'user-edit', 'uses' => 'AdminController@userupdate'));
+
 Route::get('/adduser', array('as' => 'add-user', 'uses' => 'UsersController@addUser'));
+Route::get('/address', array('as' => 'address-list', 'uses' => 'AddressController@index'));
 
-/*
-Route::filter('Admin', function()
-{
-	if (! Entrust::hasRole('Admin') ) // Checks the current user
-	{
+Route::filter('Admin', function(){
+	if (! Entrust::hasRole('Admin') ){
 		return Redirect::to('/');
 	}
 });
-*/
-Route::get('/admin', array('as' => 'admin-place', 'uses' => 'AdminController@index'));
+
+
+
 // Only users with roles that have the 'manage_posts' permission will
 // be able to access any admin/post route.
-/*Route::when('admin/post*', 'manage_posts');
+Route::when('admin/post*', 'manage_posts');
 Route::when('users*', 'Admin');
 Route::when('admin*', 'Admin');
-
-*/
-/*
-Route::get('/todo', [
-		'as' => 'todo',
-		'uses' => 'TodoController@index'
-])->before('auth');
-
-Route::get('/todo/login', array(
-		'as' => 'user-login',
-		'uses' => 'AuthController@getLogin'
-))->before('guest');
-
-Route::post('/todo/login', array(
-		'uses' => 'AuthController@postLogin'
-))->before('csrf');
-
-Route::post('/todo', array(
-		'uses' => 'TodoController@postIndex'
-))->before('csrf');
-
-Route::get('/todo/new', array(
-		'as' => 'new-task',
-		'uses' => 'TodoController@getNew'
-));
-
-Route::post('/todo/new', array(
-		'uses' => 'TodoController@postNew'
-))->before('csrf');
-
-Route::bind('item', function($value, $route){
-	return Item::where('id', $value)->first();
-});
-Route::get('/todo/delete/{item}', array(
-	'as' => 'delete-task',
-	'uses' => 'TodoController@getDelete'
-));*/

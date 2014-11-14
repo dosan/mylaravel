@@ -1,4 +1,7 @@
 @extends('layouts.default')
+	@foreach ($errors->all() as $error)
+		<div class='bg-danger alert'>{{ $error }}</div>
+	@endforeach
 @section('body')
 <div class="col-lg-10 col-lg-offset-1">
 	<h1><i class="fa fa-users"></i> User Administration <a href="/logout" class="btn btn-default pull-right">Logout</a></h1>
@@ -23,10 +26,7 @@
 					<td>{{ $user->phone }}</td>
 					<td>{{ $user->created_at->format('F d, Y h:ia') }}</td>
 					<td>
-						<a href="/users/{{ $user->id }}/edit" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-						{{ Form::open(['url' => '/users/' . $user->id, 'method' => 'DELETE']) }}
-						{{ Form::submit('Delete', ['class' => 'btn btn-danger'])}}
-						{{ Form::close() }}
+						<a href="/admin/users/{{ $user->id }}/edit/" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 					</td>
 				</tr>
 				@endforeach

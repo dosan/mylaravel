@@ -1,6 +1,6 @@
 @extends('layouts.default')
 	@foreach ($errors->all() as $error)
-		<div class='errors'>{{$error}}</div>
+		<div class='bg-danger alert'>{{ $error }}</div>
 	@endforeach
 @section('body')
 <div class="row">

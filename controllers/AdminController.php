@@ -18,8 +18,30 @@ class AdminController extends \BaseController {
 	 */
 	public function users()
 	{
+/*		$owner = new Role;
+		$owner->name = 'Owner';
+		$owner->save();
+
+		$admin = new Role;
+		$admin->name = 'Admin';
+		$admin->save();
+		$user = User::where('username','=','donald')->first();
+		$user->roles()->attach( $admin->id );
+		$managePosts = new Permission;
+		$managePosts->name = 'manage_posts';
+		$managePosts->display_name = 'Manage Posts';
+		$managePosts->save();
+
+		$manageUsers = new Permission;
+		$manageUsers->name = 'manage_users';
+		$manageUsers->display_name = 'Manage Users';
+		$manageUsers->save();
+
+		$owner->perms()->sync(array($managePosts->id,$manageUsers->id));
+		$admin->perms()->sync(array($managePosts->id));*/
+		$donald = User::where('username','=','donald')->first();
 		$users = User::all();
-		return View::make('users', array('users' => $users));
+		return View::make('admin.users', array('users' => $users, 'donald' => $donald));
 	}
 
 	/**
@@ -58,14 +80,15 @@ class AdminController extends \BaseController {
 
 	/**
 	 * Show the form for editing the specified resource.
-	 * GET /admin/{id}/edit
+	 * GET /users/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function useredit($id)
 	{
-		//
+		$user = User::find($id);
+		return View::make('admin.useredit', [ 'user' => $user ]);
 	}
 
 	/**
@@ -75,9 +98,43 @@ class AdminController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function userupdate($id)
 	{
-		//
+		$user = User::find($id);
+
+		$data = array(
+			'username'              => Input::get('username'),
+			'email'                 => Input::get('email'),
+			'phone'                 => Input::get('phone'),
+			'adress'                => Input::get('adress'),
+			'password'              => Input::get('password'),
+			'password_confirmation' => Input::get('password_confirmation'),
+			'oldpassword'           => Input::get('oldpassword'),
+		);
+		$rules = array(
+			'username'                      => 'required',
+			'email'                         => 'required',
+			'password'                      => 'min:6|confirmed',
+			'password_confirmation'         => 'min:6',
+			'oldpassword'                   => 'required',
+		);
+		$validator = Validator::make($data, $rules);
+		if (Hash::check($data['oldpassword'], $user->password)){
+			if ($validator->fails()) {
+				Session::flash('message', 'something wrong with validate');
+				return Redirect::to('/admin/users') ->withErrors($validator)->withInput(Input::except('password'));
+			} else {
+				$user->username   = Input::get('username');
+				$user->email      = Input::get('email');
+				$user->adress     = Input::get('adress');
+				$user->phone      = Input::get('phone');
+				$user->password   = Hash::make(Input::get('password'));
+				$user->save();
+				return Redirect::to('/admin/users/');
+			}
+		} else {
+			return Redirect::to('/admin/users')->withErrors('old password is wrong! Please try again.');
+		}
 	}
 
 	/**

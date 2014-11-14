@@ -1,6 +1,6 @@
 @extends('layouts.default')
 	@foreach ($errors->all() as $error)
-		<div class='errors'>{{$error}}</div>
+		<div class='bg-danger alert'>{{ $error }}</div>
 	@endforeach
 @section('body')
 <div class="row">
@@ -8,8 +8,8 @@
         <h2>Register here</h2>
         {{ Form::open(array('route' => array('user.store'), 'method' => 'post')) }}
         <div class="form-group">
-            {{Form::label('name','Your Name')}}
-            {{Form::text('name', null,array('class' => 'form-control'))}}
+            {{Form::label('username','Your Name')}}
+            {{Form::text('username', null,array('class' => 'form-control'))}}
         </div>
         <div class="form-group">
             {{Form::label('email','Your Email')}}

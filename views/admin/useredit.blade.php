@@ -8,7 +8,7 @@
 @section('body')
 <div class='col-lg-4 col-lg-offset-4'>
 	<h1><i class='fa fa-user'></i> Edit User</h1>
-	{{ Form::model($user, ['role' => 'form', 'url' => '/profile/edit/'.$user->id, 'method' => 'Post']) }}
+	{{ Form::model($user, ['role' => 'form', 'url' => '/admin/users/' . $user->id . '/edit', 'method' => 'Post']) }}
 	<div class='form-group'>
 		{{ Form::label('username', 'Your Name') }}
 		{{ Form::text('username', null, ['placeholder' => 'Your Name', 'class' => 'form-control']) }}
